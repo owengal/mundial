@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Palmeiras tem Mundial?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: radial-gradient(circle at top left, #1e5631, #0b2e19 60%, #05180d 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            position: relative;
+        }
+
+        /* Padrão de marca d'água com linhas brancas de futebol (bola, troféu, campo, apito) */
+        .football-watermark {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.13;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C!-- Bola de futebol (canto superior esquerdo) --%3E%3Ccircle cx='60' cy='60' r='26'/%3E%3Cpolygon points='60,47 72,56 67,70 53,70 48,56'/%3E%3Cline x1='60' y1='47' x2='60' y2='34'/%3E%3Cline x1='72' y1='56' x2='84' y2='51'/%3E%3Cline x1='67' y1='70' x2='75' y2='81'/%3E%3Cline x1='53' y1='70' x2='45' y2='81'/%3E%3Cline x1='48' y1='56' x2='36' y2='51'/%3E%3C!-- Trofeu (canto superior direito) --%3E%3Cpath d='M174 38 h32 v18 c0 11 -7 20 -16 20 s-16 -9 -16 -20 z'/%3E%3Cpath d='M174 43 h-8 c-4 0 -6 3 -6 7 c0 6 5 11 14 11'/%3E%3Cpath d='M206 43 h8 c4 0 6 3 6 7 c0 6 -5 11 -14 11'/%3E%3Cline x1='190' y1='76' x2='190' y2='90'/%3E%3Crect x='178' y='90' width='24' height='6' rx='2'/%3E%3C!-- Mini campo de futebol (canto inferior esquerdo) --%3E%3Crect x='26' y='162' width='68' height='46' rx='3'/%3E%3Cline x1='60' y1='162' x2='60' y2='208'/%3E%3Ccircle cx='60' cy='185' r='9'/%3E%3Crect x='26' y='174' width='11' height='22'/%3E%3Crect x='83' y='174' width='11' height='22'/%3E%3C!-- Chuteira / Estrela e Apito (canto inferior direito) --%3E%3Ccircle cx='182' cy='186' r='12'/%3E%3Cpath d='M190 177 h22 v9 h-12'/%3E%3Ccircle cx='182' cy='186' r='4'/%3E%3Cpolygon points='130,118 133,125 140,125 134,130 136,137 130,133 124,137 126,130 120,125 127,125'/%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 260px 260px;
+        }
+
+        /* Linhas grandes sutis de campo no fundo */
+        .pitch-lines {
+            position: fixed;
+            inset: 24px;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .pitch-lines::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 240px;
+            height: 240px;
+            transform: translate(-50%, -50%);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+
+        .pitch-lines::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1.5px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Efeito de brilho aesthetic sutil no fundo */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: rgba(46, 204, 113, 0.14);
+            border-radius: 50%;
+            filter: blur(110px);
+            top: 10%;
+            left: 15%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            background: rgba(11, 46, 25, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 28px;
+            padding: 50px 42px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+            max-width: 480px;
+            width: 92%;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .logo-wrapper {
+            width: 135px;
+            height: 135px;
+            margin: 0 auto 24px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-wrapper:hover {
+            transform: scale(1.04);
+        }
+
+        .logo-wrapper img,
+        .logo-wrapper svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        h1 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 36px;
+            line-height: 1.3;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .buttons-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            min-height: 66px;
+            width: 100%;
+        }
+
+        button {
+            padding: 18px 48px;
+            min-width: 145px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        #btn-sim {
+            background: linear-gradient(135deg, #27ae60, #1e8449);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.35);
+            z-index: 9999;
+            position: relative;
+        }
+
+        #btn-nao {
+            background: rgba(255, 255, 255, 0.92);
+            color: #0b2e19;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        #btn-nao:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        #btn-nao:active {
+            transform: translateY(0);
+        }
+
+        /* Tela de Resultado ("Time sem Mundial") */
+        #result-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.35s ease forwards;
+        }
+
+        .result-text {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #ff6b6b;
+            text-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            margin-bottom: 32px;
+            letter-spacing: -0.5px;
+        }
+
+        #btn-voltar {
+            background: rgba(255, 255, 255, 0.14);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            padding: 15px 42px;
+            min-width: 160px;
+            font-size: 1.1rem;
+        }
+
+        #btn-voltar:hover {
+            background: rgba(255, 255, 255, 0.24);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Elementos de marca d'água no fundo -->
+    <div class="pitch-lines"></div>
+    <div class="football-watermark"></div>
+
+    <div class="container">
+        <!-- Escudo do Palmeiras -->
+        <div class="logo-wrapper">
+            <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg" 
+                alt="Escudo Sociedade Esportiva Palmeiras"
+                onerror="this.style.display='none'; document.getElementById('fallback-svg').style.display='block';"
+            >
+            <svg id="fallback-svg" style="display:none;" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="95" fill="#006437" stroke="#ffffff" stroke-width="6"/>
+                <circle cx="100" cy="100" r="82" fill="none" stroke="#ffffff" stroke-width="3"/>
+                <text x="100" y="118" font-family="Poppins, Arial, sans-serif" font-size="64" font-weight="800" fill="#ffffff" text-anchor="middle">P</text>
+            </svg>
+        </div>
+
+        <!-- Tela da Pergunta -->
+        <div id="question-screen">
+            <h1>O Palmeiras tem mundial?</h1>
+            <div class="buttons-area" id="buttons-area">
+                <button id="btn-sim" type="button">Sim</button>
+                <button id="btn-nao" type="button">Não</button>
+            </div>
+        </div>
+
+        <!-- Tela do Resultado -->
+        <div id="result-screen">
+            <div class="result-text">Time sem Mundial</div>
+            <button id="btn-voltar" type="button">Voltar</button>
+        </div>
+    </div>
+
+    <script>
+        const btnSim = document.getElementById('btn-sim');
+        const btnNao = document.getElementById('btn-nao');
+        const btnVoltar = document.getElementById('btn-voltar');
+        const questionScreen = document.getElementById('question-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const buttonsArea = document.getElementById('buttons-area');
+
+        let isFloating = false;
+
+        function moveButtonAway() {
+            const btnRect = btnSim.getBoundingClientRect();
+            const btnWidth = btnRect.width || 145;
+            const btnHeight = btnRect.height || 62;
+
+            const margin = 24;
+            const maxX = window.innerWidth - btnWidth - margin;
+            const maxY = window.innerHeight - btnHeight - margin;
+
+            let newX, newY;
+            let attempts = 0;
+
+            do {
+                newX = Math.max(margin, Math.floor(Math.random() * maxX));
+                newY = Math.max(margin, Math.floor(Math.random() * maxY));
+                attempts++;
+            } while (
+                Math.hypot(newX - btnRect.left, newY - btnRect.top) < 180 &&
+                attempts < 20
+            );
+
+            if (!isFloating) {
+                document.body.appendChild(btnSim);
+                btnSim.style.position = 'fixed';
+                isFloating = true;
+            }
+
+            btnSim.style.left = `${newX}px`;
+            btnSim.style.top = `${newY}px`;
+        }
+
+        // Foge antes mesmo do clique no desktop
+        btnSim.addEventListener('mouseenter', moveButtonAway);
+        btnSim.addEventListener('mouseover', moveButtonAway);
+        btnSim.addEventListener('mousemove', moveButtonAway);
+
+        // Foge também no celular/tablet
+        btnSim.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButtonAway();
+        }, { passive: false });
+
+        // Bloqueia clique via teclado
+        btnSim.addEventListener('focus', () => {
+            btnSim.blur();
+            moveButtonAway();
+        });
+
+        // Ação do botão "Não"
+        btnNao.addEventListener('click', () => {
+            questionScreen.style.display = 'none';
+            btnSim.style.display = 'none';
+            resultScreen.style.display = 'flex';
+        });
+
+        // Ação do botão "Voltar" — restaura os dois botões perfeitamente centralizados lado a lado
+        btnVoltar.addEventListener('click', () => {
+            resultScreen.style.display = 'none';
+            questionScreen.style.display = 'block';
+
+            // Reseta completamente o posicionamento do botão "Sim"
+            btnSim.style.position = 'relative';
+            btnSim.style.left = '';
+            btnSim.style.top = '';
+            btnSim.style.right = '';
+            btnSim.style.bottom = '';
+            btnSim.style.margin = '0';
+            btnSim.style.display = 'inline-flex';
+            btnSim.style.alignItems = 'center';
+            btnSim.style.justifyContent = 'center';
+
+            // Recoloca dentro da área flex centralizada antes do botão "Não"
+            buttonsArea.innerHTML = '';
+            buttonsArea.appendChild(btnSim);
+            buttonsArea.appendChild(btnNao);
+            isFloating = false;
+        });
+    </script>
+</body>
+</html>
