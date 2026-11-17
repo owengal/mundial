@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O Palmeiras tem Mundial?</title>
+    <title>Mundial?</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
@@ -180,7 +180,7 @@
             transform: translateY(0);
         }
 
-        /* Tela de Resultado ("Time sem Mundial") */
+        /* Tela de Resultado */
         #result-screen {
             display: none;
             flex-direction: column;
@@ -256,7 +256,7 @@
 
         <!-- Tela do Resultado -->
         <div id="result-screen">
-            <div class="result-text">Time sem Mundial</div>
+            <div class="result-text">Time sem Mundial! HAHAHAHAHAH</div>
             <button id="btn-voltar" type="button">Voltar</button>
         </div>
     </div>
@@ -270,6 +270,7 @@
         const buttonsArea = document.getElementById('buttons-area');
 
         let isFloating = false;
+        let placeholder = null;
 
         function moveButtonAway() {
             const btnRect = btnSim.getBoundingClientRect();
@@ -293,6 +294,15 @@
             );
 
             if (!isFloating) {
+                // Cria um espaçador invisível com as exatas dimensões do botão "Sim"
+                // para manter o botão "Não" parado exatamente no lugar original
+                placeholder = document.createElement('div');
+                placeholder.style.width = `${btnRect.width}px`;
+                placeholder.style.height = `${btnRect.height}px`;
+                placeholder.style.flexShrink = '0';
+                placeholder.style.visibility = 'hidden';
+                buttonsArea.insertBefore(placeholder, btnSim);
+
                 document.body.appendChild(btnSim);
                 btnSim.style.position = 'fixed';
                 isFloating = true;
@@ -330,6 +340,11 @@
         btnVoltar.addEventListener('click', () => {
             resultScreen.style.display = 'none';
             questionScreen.style.display = 'block';
+
+            if (placeholder) {
+                placeholder.remove();
+                placeholder = null;
+            }
 
             // Reseta completamente o posicionamento do botão "Sim"
             btnSim.style.position = 'relative';
